@@ -2,6 +2,8 @@
 title: 'MAMBO-G: Magnitude-Aware Mitigation for Boosted Guidance'
 description: 'Introducing a novel strategy to mitigate instability in boosted guidance for diffusion models, improving both quality and speed.'
 pubDate: 'Dec 17 2025'
+pinned: true
+heroImage: '/Matrix-omini/mambo-images/header.png'
 tags:
   - diffusion-models
   - generative-ai
@@ -12,6 +14,8 @@ tags:
 # MAMBO-G: Magnitude-Aware Mitigation for Boosted Guidance
 
 **Authors:** Shangwenzhu et al.
+
+![MAMBO-G Header](/Matrix-omini/mambo-images/header.png)
 
 ## Abstract
 
@@ -26,15 +30,17 @@ Recent large-scale diffusion and flow-matching models face specific challenges w
 1.  **Instability at High Guidance:** Strong guidance, while necessary for prompt adherence, often collapses the generation process into artifacts or oversaturated images.
 2.  **The "Overshoot" Phenomenon:** In high-dimensional spaces, the initial noise ($t=1$) is statistically independent of the target data. The guidance update at this stage tends to be a generic direction determined solely by the text prompt. Applying large CFG scales here forces the generation trajectory to deviate significantly from the data manifold.
 
+![Interval Comparison](/Matrix-omini/mambo-images/interval.png)
+
 ## The MAMBO-G Solution
 
 MAMBO-G proposes a magnitude-aware adaptive guidance strategy. The core innovation lies in defining a **Magnitude-Aware Ratio ($r_t$)**:
 
 $$
-r_t(\mathbf{x}_t, t) = \frac{\|\mathbf{v}_{\text{cond}}(\mathbf{x}_t, t) - \mathbf{v}_{\text{uncond}}(\mathbf{x}_t, t)\|}{\|\mathbf{v}_{\text{cond}}(\mathbf{x}_t, t)\|}
+r_t(\mathbf{x}_t, t) = \frac{\|\mathbf{v}_{\text{cond}}(\mathbf{x}_t, t) - \mathbf{v}_{\text{uncond}}(\mathbf{x}_t, t)\|}{\|\mathbf{v}_{\text{uncond}}(\mathbf{x}_t, t)\|}
 $$
 
-This ratio measures the relative strength of the "external guidance force" against the "internal denoising force." A high ratio indicates a potential risk of overshoot.
+This ratio measures the relative strength of the "external guidance force" against the "internal denoising force" (specifically using the **unconditional prediction as the base**). A high ratio indicates a potential risk of overshoot.
 
 Based on this ratio, MAMBO-G applies an adaptive damping factor to the guidance scale:
 
@@ -57,4 +63,3 @@ MAMBO-G offers a theoretically grounded and practically effective solution to th
 ---
 
 *This project is supported by National Natural Science Foundation of China and National Key Research Projects.*
-
