@@ -15,13 +15,18 @@ tags:
 
 **Authors:** Shangwenzhu et al.
 
-![MAMBO-G Header](/Matrix-omini/mambo-images/header.png)
-
 ## Abstract
 
 Classifier-Free Guidance (CFG) is a crucial technique in modern text-to-image and text-to-video generation, significantly improving the alignment between generated content and text prompts. However, as model scales increase (e.g., SD3, Lumina, WAN2.1), strong guidance often leads to instability, manifesting as oversaturated colors, unnatural structures, and artifacts.
 
 We introduce **MAMBO-G** (Magnitude-Aware Mitigation for Boosted Guidance), a novel adaptive guidance strategy designed to address these challenges. By analyzing the dynamics of guidance in high-dimensional latent spaces, we identify that initial guidance updates often point in a generic direction, leading to "overshoot" when strong guidance is applied early. MAMBO-G mitigates this by dynamically adjusting the guidance scale based on a "Magnitude-Aware Ratio," ensuring stability without compromising text alignment.
+
+### Visual Comparison
+
+| Baseline CFG (Oversaturated) | MAMBO-G (Ours) |
+| :---: | :---: |
+| ![Baseline](/Matrix-omini/mambo-images/fig1_baseline.png) | ![Ours](/Matrix-omini/mambo-images/fig1_ours.png) |
+| *Figure 1: Comparison between standard CFG (left) and MAMBO-G (right). Standard CFG leads to severe oversaturation and artifacts at high guidance scales, while MAMBO-G maintains structural integrity and visual quality.* | |
 
 ## Key Challenges
 
@@ -30,7 +35,8 @@ Recent large-scale diffusion and flow-matching models face specific challenges w
 1.  **Instability at High Guidance:** Strong guidance, while necessary for prompt adherence, often collapses the generation process into artifacts or oversaturated images.
 2.  **The "Overshoot" Phenomenon:** In high-dimensional spaces, the initial noise ($t=1$) is statistically independent of the target data. The guidance update at this stage tends to be a generic direction determined solely by the text prompt. Applying large CFG scales here forces the generation trajectory to deviate significantly from the data manifold.
 
-![Interval Comparison](/Matrix-omini/mambo-images/interval.png)
+![Interval Analysis](/Matrix-omini/mambo-images/interval.png)
+*Figure 2: Analysis of guidance interval impact. The plot illustrates how guidance strength varies across different timesteps, highlighting the critical early stage where overshoot is most likely to occur.*
 
 ## The MAMBO-G Solution
 
@@ -40,7 +46,7 @@ $$
 r_t(\mathbf{x}_t, t) = \frac{\|\mathbf{v}_{\text{cond}}(\mathbf{x}_t, t) - \mathbf{v}_{\text{uncond}}(\mathbf{x}_t, t)\|}{\|\mathbf{v}_{\text{uncond}}(\mathbf{x}_t, t)\|}
 $$
 
-This ratio measures the relative strength of the "external guidance force" against the "internal denoising force" (specifically using the **unconditional prediction as the base**). A high ratio indicates a potential risk of overshoot.
+This ratio measures the relative strength of the "external guidance force" against the "internal denoising force" (using the **unconditional prediction as the base**). A high ratio indicates a potential risk of overshoot.
 
 Based on this ratio, MAMBO-G applies an adaptive damping factor to the guidance scale:
 
