@@ -37,5 +37,12 @@
     "svelte": "^5.43.2",
     "typescript": "^5.9.3"
   },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "esbuild",
+      "sharp"
+    ]
+  },
   "packageManager": "pnpm@9.15.0"
 }
