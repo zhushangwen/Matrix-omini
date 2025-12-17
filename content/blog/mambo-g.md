@@ -43,8 +43,20 @@ Recent large-scale diffusion and flow-matching models face specific challenges w
 1.  **Instability at High Guidance:** Strong guidance, while necessary for prompt adherence, often collapses the generation process into artifacts or oversaturated images.
 2.  **The "Overshoot" Phenomenon:** In high-dimensional spaces, the initial noise ($t=1$) is statistically independent of the target data. The guidance update at this stage tends to be a generic direction determined solely by the text prompt. Applying large CFG scales here forces the generation trajectory to deviate significantly from the data manifold.
 
-![Interval Analysis](/Matrix-omini/mambo-images/fig2_interval.png)
-*Figure 2: Analysis of guidance interval impact. The plot illustrates how guidance strength varies across different timesteps, highlighting the critical early stage where overshoot is most likely to occur.*
+### Visual Comparison 2
+
+<div style="display: flex; gap: 20px; align-items: flex-start; margin-bottom: 10px;">
+  <div style="flex: 1; text-align: center;">
+    <img src="/Matrix-omini/mambo-images/fig2_baseline.png" alt="Baseline CFG (Detailed)" style="width: 100%; border-radius: 8px;">
+    <p style="margin-top: 5px;"><strong>Baseline CFG</strong></p>
+  </div>
+  <div style="flex: 1; text-align: center;">
+    <img src="/Matrix-omini/mambo-images/fig2_ours.png" alt="MAMBO-G (Detailed)" style="width: 100%; border-radius: 8px;">
+    <p style="margin-top: 5px;"><strong>MAMBO-G</strong></p>
+  </div>
+</div>
+
+<p style="text-align: center; color: #666; font-style: italic; margin-top: 0;">Figure 2: Further comparison of detail preservation. Standard CFG (left) often distorts fine details due to overshoot, whereas MAMBO-G (right) preserves intricate textures and lighting effects.</p>
 
 ## The MAMBO-G Solution
 
